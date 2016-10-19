@@ -1,0 +1,99 @@
+﻿@model Obalon.Models.PatientModel
+
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="jumbotron">
+    @using (Html.BeginForm("Create", "Patient"))
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                New  Patient
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+
+                        <div class="form-group">
+                            <fieldset disabled>
+                                <label style="font-size:small">Patient ID</label>
+                                <input id="patientId" class="form-control" placeholder="ID will be supplied after save">
+                            </fieldset>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:small">Gender</label>
+                            <select data-val="true" name="gender" id="ddlGender" class="form-control" data-val-required="*Required!">
+                                <option></option>
+                                <option>Female</option>
+                                <option>Male</option>
+                            </select>
+                            <span class="field-validation-valid" data-valmsg-for="gender" style="color:red; font-size:small"
+                                  data-valmsg-replace="true"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group col-md-4" style="padding-left:0px;">
+                                <label style="font-size:small">Age</label>
+                                <input data-val="true" id="patientYears" name="years" class="form-control" placeholder="Years" data-val-required="*Required!"
+                                       data-val-range="Range between 16 and 100" data-val-range-min="16" data-val-range-max="100">
+                                <span class="field-validation-valid" data-valmsg-for="years" style="color:red; font-size:small"
+                                      data-valmsg-replace="true"></span>
+                            </div>
+                            <div class="form-group col-md-4"  style="padding-left:0px;">
+                                <label style="font-size:small">Height</label>
+                                <select data-val="true" name="heigthFt" id="ddlHeightFt" class="form-control"
+                                        data-val-number="*Required!" data-val-required="*Required!">
+                                    <option>Ft.</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                </select>
+                                <span class="field-validation-valid" data-valmsg-for="heigthFt" style="color:red; font-size:small"
+                                      data-valmsg-replace="true"></span>
+                            </div>
+                            <div class="form-group col-md-4"  style="padding-left:0px;">
+                                <label style="font-size:small;padding-bottom:15px;"></label>
+                                <select data-val="true" name="heightIn" id="ddlHeightIn" class="form-control"
+                                        data-val-number="*Required!" data-val-required="*Required!">
+                                    <option>In.</option>
+                                    <option>0</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                </select>
+                                <span class="field-validation-valid" data-valmsg-for="heightIn" style="color:red; font-size:small"
+                                      data-valmsg-replace="true"></span>
+                            </div>
+
+                        </div>
+
+
+                       
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    }
+</div>
+
+
+

@@ -13,6 +13,22 @@ namespace Obalon
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //routes.MapRoute(name: "Patient2",
+            //    url: "Patient2/{action}/{name}",
+            //    defaults: new { controller = "Patient2", action = "index", name=UrlParameter.Optional });
+
+
+            routes.MapRoute(
+              name: "Patient",
+              url: "Patient/{action}/{name}",
+              defaults: new { controller = "Patient", action = "Index", name=UrlParameter.Optional}
+          );
+            routes.MapRoute(
+              name: "PatientDetails",
+              url: "Patient/{action}/{id}",
+              defaults: new { controller = "Patient", action = "Details", id = UrlParameter.Optional }
+          );
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
