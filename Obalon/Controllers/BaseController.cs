@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Ninject;
 
 namespace Obalon.Controllers
 {
-    public class HomeController : BaseController
+    public class BaseController : Controller
     {
-        public ActionResult Index()
+        public BaseController()
         {
-            return View();
+
         }
 
     }
