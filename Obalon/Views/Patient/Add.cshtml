@@ -5,6 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .validationErrorMessage {
+        color: red;
+        font-size: 12px;
+    }
+</style>
+
 <div class="jumbotron">
     @using (Html.BeginForm("Create", "Patient"))
     {
@@ -29,7 +36,7 @@
                                 <option>Female</option>
                                 <option>Male</option>
                             </select>
-                            <span class="field-validation-valid" data-valmsg-for="gender" style="color:red; font-size:small"
+                            <span class="field-validation-valid validationErrorMessage" data-valmsg-for="gender"
                                   data-valmsg-replace="true"></span>
                         </div>
                         <div class="form-group">
@@ -37,10 +44,10 @@
                                 <label style="font-size:small">Age</label>
                                 <input data-val="true" id="patientYears" name="years" class="form-control" placeholder="Years" data-val-required="*Required!"
                                        data-val-range="Range between 16 and 100" data-val-range-min="16" data-val-range-max="100">
-                                <span class="field-validation-valid" data-valmsg-for="years" style="color:red; font-size:small"
+                                <span class="field-validation-valid validationErrorMessage" data-valmsg-for="years"
                                       data-valmsg-replace="true"></span>
                             </div>
-                            <div class="form-group col-md-4"  style="padding-left:0px;">
+                            <div class="form-group col-md-4" style="padding-left:0px;">
                                 <label style="font-size:small">Height</label>
                                 <select data-val="true" name="heigthFt" id="ddlHeightFt" class="form-control"
                                         data-val-number="*Required!" data-val-required="*Required!">
@@ -54,10 +61,10 @@
                                     <option>7</option>
                                     <option>8</option>
                                 </select>
-                                <span class="field-validation-valid" data-valmsg-for="heigthFt" style="color:red; font-size:small"
+                                <span class="field-validation-valid validationErrorMessage" data-valmsg-for="heigthFt"
                                       data-valmsg-replace="true"></span>
                             </div>
-                            <div class="form-group col-md-4"  style="padding-left:0px;">
+                            <div class="form-group col-md-4" style="padding-left:0px;">
                                 <label style="font-size:small;padding-bottom:15px;"></label>
                                 <select data-val="true" name="heightIn" id="ddlHeightIn" class="form-control"
                                         data-val-number="*Required!" data-val-required="*Required!">
@@ -75,16 +82,10 @@
                                     <option>10</option>
                                     <option>11</option>
                                 </select>
-                                <span class="field-validation-valid" data-valmsg-for="heightIn" style="color:red; font-size:small"
+                                <span class="field-validation-valid validationErrorMessage" data-valmsg-for="heightIn"
                                       data-valmsg-replace="true"></span>
                             </div>
-
                         </div>
-
-
-                       
-
-
                     </div>
                 </div>
             </div>

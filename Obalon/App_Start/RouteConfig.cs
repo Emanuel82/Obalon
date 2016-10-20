@@ -20,8 +20,8 @@ namespace Obalon
 
             routes.MapRoute(
               name: "Patient",
-              url: "Patient/{action}/{name}",
-              defaults: new { controller = "Patient", action = "Index", name=UrlParameter.Optional}
+              url: "Patient/{action}/{id}",
+              defaults: new { controller = "Patient", action = "Index", id=UrlParameter.Optional}
           );
             routes.MapRoute(
               name: "PatientDetails",

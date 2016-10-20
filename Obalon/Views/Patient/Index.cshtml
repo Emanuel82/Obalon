@@ -1,19 +1,56 @@
-﻿@model Obalon.Models.PatientModel
+﻿@model List<Obalon.Models.Patient>
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .headingButton {
+        padding: 2px 4px 2px 4px;
+        width: 15%;
+    }
 
+        .headingButton a {
+            color: white;
+            text-align: center;
+            text-decoration: none !important;
+        }
+
+    .dataTables_filter {
+        float: right;
+        padding-right: inherit;
+    }
+
+    .dataTables_length {
+        padding-left: inherit;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    tr.selected {
+   background-color :lightcyan;
+    }
+</style>
 <div class="jumbotron">
     <div class="panel panel-default">
         <div class="panel-heading">
-            Patients
+
+            <div class="panel-title">
+                Patients
+
+                <button class="btn btn-primary pull-right headingButton"><a href="/Patient/Add">NEW PATIENT</a></button>
+            </div>
         </div>
+
         <div class="panel-body">
             <div class="row">
-
-                <table id="sampleTable" class="table table-bordered table-hover table-striped">
+                <table id="sampleTable" class="table table-hover">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -25,70 +62,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>3326</td>
-                            <td>10/21/2013</td>
-                            <td>3:29 PM</td>
-                            <td>$321.33</td>
-                            <td>3:29 PM</td>
-                            <td>$321.33</td>
-                        </tr>
-                        <tr>
-                            <td>3325</td>
-                            <td>10/21/2013</td>
-                            <td>3:20 PM</td>
-                            <td>$234.34</td>
-                            <td>3:29 PM</td>
-                            <td>$321.33</td>
-                        </tr>
-                        <tr>
-                            <td>3324</td>
-                            <td>10/21/2013</td>
-                            <td>3:03 PM</td>
-                            <td>$724.17</td>
-                            <td>3:29 PM</td>
-                            <td>$321.33</td>
-                        </tr>
-                        <tr>
-                            <td>3323</td>
-                            <td>10/21/2013</td>
-                            <td>3:00 PM</td>
-                            <td>$23.71</td>
-                            <td>3:29 PM</td>
-                            <td>$321.33</td>
-                        </tr>
-                        <tr>
-                            <td>3322</td>
-                            <td>10/21/2013</td>
-                            <td>2:49 PM</td>
-                            <td>$8345.23</td>
-                            <td>3:29 PM</td>
-                            <td>$321.33</td>
-                        </tr>
-                        <tr>
-                            <td>3321</td>
-                            <td>10/21/2013</td>
-                            <td>2:23 PM</td>
-                            <td>$245.12</td>
-                            <td>3:29 PM</td>
-                            <td>$321.33</td>
-                        </tr>
-                        <tr>
-                            <td>3320</td>
-                            <td>10/21/2013</td>
-                            <td>2:15 PM</td>
-                            <td>$5663.54</td>
-                            <td>3:29 PM</td>
-                            <td>$321.33</td>
-                        </tr>
-                        <tr>
-                            <td>3319</td>
-                            <td>10/21/2013</td>
-                            <td>2:13 PM</td>
-                            <td>$943.45</td>
-                            <td>3:29 PM</td>
-                            <td>$321.33</td>
-                        </tr>
+                        @foreach (var patient in Model)
+                        {
+                            <tr ondblclick="window.location.href = '/Patient/AddEvent/@patient.PatientId'" onclick="$('.selected').removeClass('selected'); $(this).addClass('selected')">
+                                <td>@patient.PatientId</td>
+                                <td>@patient.LastSeen</td>
+                                <td>@patient.Status</td>
+                                <td>@patient.WeightLoss lbs</td>
+                                <td>@patient.TotalBodyLoss %</td>
+                                <td>@patient.BMIChange %</td>
+                            </tr>
+                        }
+
                     </tbody>
                 </table>
 

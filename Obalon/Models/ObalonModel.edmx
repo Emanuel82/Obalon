@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ObalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="EventId" />
+          </Key>
+          <Property Name="EventId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventTypeId" Type="int" Nullable="false" />
+          <Property Name="PatientId" Type="int" Nullable="false" />
+          <Property Name="Days" Type="int" Nullable="false" />
+          <Property Name="Weight" Type="int" Nullable="false" />
+          <Property Name="SeriousInjury" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventType">
+          <Key>
+            <PropertyRef Name="EventTypeId" />
+          </Key>
+          <Property Name="EventTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventTypeName" Type="nvarchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="PatientId" />
+          </Key>
+          <Property Name="PatientId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DoctorId" Type="int" Nullable="false" />
+          <Property Name="Gender" Type="bit" Nullable="false" />
+          <Property Name="Height" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Event_EventType">
+          <End Role="EventType" Type="Self.EventType" Multiplicity="1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventType">
+              <PropertyRef Name="EventTypeId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="EventTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Event_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="PatientId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ObalonModelStoreContainer">
+          <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventType" EntityType="Self.EventType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Event_EventType" Association="Self.FK_Event_EventType">
+            <End Role="EventType" EntitySet="EventType" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_Patient" Association="Self.FK_Event_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ObalonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="EventId" />
+          </Key>
+          <Property Name="EventId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventTypeId" Type="Int32" Nullable="false" />
+          <Property Name="PatientId" Type="Int32" Nullable="false" />
+          <Property Name="Days" Type="Int32" Nullable="false" />
+          <Property Name="Weight" Type="Int32" Nullable="false" />
+          <Property Name="SeriousInjury" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="EventType" Relationship="Self.FK_Event_EventType" FromRole="Event" ToRole="EventType" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_Event_Patient" FromRole="Event" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="EventType">
+          <Key>
+            <PropertyRef Name="EventTypeId" />
+          </Key>
+          <Property Name="EventTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventTypeName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Events" Relationship="Self.FK_Event_EventType" FromRole="EventType" ToRole="Event" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="PatientId" />
+          </Key>
+          <Property Name="PatientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DoctorId" Type="Int32" Nullable="false" />
+          <Property Name="Gender" Type="Boolean" Nullable="false" />
+          <Property Name="Height" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Events" Relationship="Self.FK_Event_Patient" FromRole="Patient" ToRole="Event" />
+        </EntityType>
+        <Association Name="FK_Event_EventType">
+          <End Role="EventType" Type="Self.EventType" Multiplicity="1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventType">
+              <PropertyRef Name="EventTypeId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="EventTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Event_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="PatientId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ObalonEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Events" EntityType="Self.Event" />
+          <EntitySet Name="EventTypes" EntityType="Self.EventType" />
+          <EntitySet Name="Patients" EntityType="Self.Patient" />
+          <AssociationSet Name="FK_Event_EventType" Association="Self.FK_Event_EventType">
+            <End Role="EventType" EntitySet="EventTypes" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_Patient" Association="Self.FK_Event_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ObalonModelStoreContainer" CdmEntityContainer="ObalonEntities">
+          <EntitySetMapping Name="Events">
+            <EntityTypeMapping TypeName="ObalonModel.Event">
+              <MappingFragment StoreEntitySet="Event">
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
+                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="Days" ColumnName="Days" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="SeriousInjury" ColumnName="SeriousInjury" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventTypes">
+            <EntityTypeMapping TypeName="ObalonModel.EventType">
+              <MappingFragment StoreEntitySet="EventType">
+                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
+                <ScalarProperty Name="EventTypeName" ColumnName="EventTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patients">
+            <EntityTypeMapping TypeName="ObalonModel.Patient">
+              <MappingFragment StoreEntitySet="Patient">
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="DoctorId" ColumnName="DoctorId" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
