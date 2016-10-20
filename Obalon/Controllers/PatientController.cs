@@ -9,9 +9,9 @@ namespace Obalon.Controllers
     public class PatientController : Controller
     {
         // GET: Patient
-        public ActionResult Index(string name)
+        public ActionResult Index(int id)
         {
-            return View(new Models.PatientModel());
+            return View(Models.Patient.Get(id));
           //  return Content(ceva); //View();
         }
 
@@ -33,16 +33,23 @@ namespace Obalon.Controllers
         {
             try
             {
-                //if (ModelState.IsValid)
+                using (var db = new Models.ObalonEntities())
+                {
+                    db.Patients.Add(new Models.Patient() { DoctorId = 77777, Gender = false, Height = 1110 });
+                    db.SaveChanges();
+                }
 
-                    // TODO: Add insert logic here
-
-                    return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             catch
             {
                 return View();
             }
+        }
+
+        public ActionResult AddEvent(int id)
+        {
+            return View(Models.PatientModel.Dummy); //RedirectToAction("Index");
         }
 
         // GET: Patient/Edit/5
@@ -88,5 +95,10 @@ namespace Obalon.Controllers
                 return View();
             }
         }
+
+
+
+        
+
     }
 }
