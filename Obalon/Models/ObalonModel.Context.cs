@@ -18,7 +18,6 @@ namespace Obalon.Models
         public ObalonEntities()
             : base("name=ObalonEntities")
         {
-
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

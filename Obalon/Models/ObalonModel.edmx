@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ObalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ObalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Event">
           <Key>
             <PropertyRef Name="EventId" />
@@ -30,7 +30,9 @@
           <Property Name="PatientId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DoctorId" Type="int" Nullable="false" />
           <Property Name="Gender" Type="bit" Nullable="false" />
-          <Property Name="Height" Type="int" Nullable="false" />
+          <Property Name="Age" Type="int" />
+          <Property Name="HeightFt" Type="int" />
+          <Property Name="HeightIn" Type="int" />
         </EntityType>
         <Association Name="FK_Event_EventType">
           <End Role="EventType" Type="Self.EventType" Multiplicity="1" />
@@ -69,8 +71,7 @@
             <End Role="Event" EntitySet="Event" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ObalonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -102,8 +103,10 @@
           <Property Name="PatientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DoctorId" Type="Int32" Nullable="false" />
           <Property Name="Gender" Type="Boolean" Nullable="false" />
-          <Property Name="Height" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Events" Relationship="Self.FK_Event_Patient" FromRole="Patient" ToRole="Event" />
+          <Property Name="Age" Type="Int32" />
+          <Property Name="HeightFt" Type="Int32" />
+          <Property Name="HeightIn" Type="Int32" />
         </EntityType>
         <Association Name="FK_Event_EventType">
           <End Role="EventType" Type="Self.EventType" Multiplicity="1" />
@@ -171,10 +174,12 @@
           <EntitySetMapping Name="Patients">
             <EntityTypeMapping TypeName="ObalonModel.Patient">
               <MappingFragment StoreEntitySet="Patient">
+                <ScalarProperty Name="HeightIn" ColumnName="HeightIn" />
+                <ScalarProperty Name="HeightFt" ColumnName="HeightFt" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
                 <ScalarProperty Name="PatientId" ColumnName="PatientId" />
                 <ScalarProperty Name="DoctorId" ColumnName="DoctorId" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="Height" ColumnName="Height" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
