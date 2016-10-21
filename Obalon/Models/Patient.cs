@@ -11,8 +11,7 @@ namespace Obalon.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public partial class Patient
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -27,27 +26,7 @@ namespace Obalon.Models
         public Nullable<int> Age { get; set; }
         public Nullable<int> HeightFt { get; set; }
         public Nullable<int> HeightIn { get; set; }
-
-        #region Unmapped Properties
-
-        [NotMapped]
-        public int LastSeen { get; set; }
-
-        [NotMapped]
-        public int Status { get; set; }
-
-        [NotMapped]
-        public int WeightLoss { get; set; }
-
-        [NotMapped]
-        public int TotalBodyLoss { get; set; }
-
-        [NotMapped]
-        public int BMIChange { get; set; }
-
-        #endregion
-
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Event> Events { get; set; }
     }
