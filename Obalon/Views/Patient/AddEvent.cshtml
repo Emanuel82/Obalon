@@ -7,106 +7,74 @@
 
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" />
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
-<style>
-    .validationErrorMessage {
-        color: red;
-        font-size: 12px;
-    }
 
-    .input-group-addon-clean {
-        background-color: transparent;
-        border: none;
-    }
-
-    .vertical-alignment-helper {
-        display: table;
-        height: 100%;
-        width: 100%;
-        pointer-events: none; /* This makes sure that we can still click outside of the modal to close it */
-    }
-
-    .vertical-align-center {
-        /* To center vertically */
-        display: table-cell;
-        vertical-align: middle;
-        pointer-events: none;
-    }
-
-    .modal-content {
-        /* Bootstrap sets the size of the modal in the modal-dialog class, we need to inherit it */
-        width: inherit;
-        height: inherit;
-        /* To center horizontally */
-        margin: 0 auto;
-        pointer-events: all;
-    }
-</style>
 
 <div class="jumbotron">
     @using (Html.BeginForm("AddEvent", "Patient", FormMethod.Post, new { @id = "addEventForm" }))
     {
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Add Event
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Add Event
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
 
-                        <div class="form-group">
-                            <fieldset disabled>
-                                <label style="font-size:small">Patient ID</label>
-                                <input id="patientId" class="form-control" value="@Model.Id" />
-                            </fieldset>
-                        </div>
-                        <div class="form-group">
-                            <label style="font-size:small">Event</label>
-                            @Html.DropDownList("ddlEvents", Model.AvailableEvents, new Dictionary<string, Object> { { "class", "form-control" }, { "data-val-required", "*Required!" } } )
+                    <div class="form-group">
+                        <fieldset disabled>
+                            <label style="font-size:small">Patient ID</label>
+                            <input id="patientId" class="form-control" value="@Model.Id" />
+                        </fieldset>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size:small">Event</label>
+                        @Html.DropDownList("ddlEvents", Model.AvailableEvents, new Dictionary<string, Object>
+                            { { "class", "form-control" }, { "data-val-required", "*Required!" } } )
                             <span class="field-validation-valid validationErrorMessage" data-valmsg-for="gender"
                                   data-valmsg-replace="true"></span>
-                        </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label style="font-size:small">Date</label>
-                            <div class="input-group input-append date" id="eventDateContainer">
-                                <input type="text" class="form-control" id="eventDate" name="eventDate"  />
-                                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
-                            @*<span class="field-validation-valid validationErrorMessage" data-valmsg-for="eventDate"
-                                  data-valmsg-replace="true"></span>*@
+                    <div class="form-group">
+                        <label style="font-size:small">Date</label>
+                        <div class="input-group input-append date" id="eventDateContainer">
+                            <input type="text" class="form-control" id="eventDate" name="eventDate" />
+                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
-                        <div class="form-group">
-                            <label style="font-size:small" id="lblWeight">Weight</label>
-                            <div class="input-group input-append">
-                                <input data-val="true" id="weight" name="weight" class="form-control" placeholder="In pounds" data-val-required="*Required!"
-                                       data-val-range="Range between 50 and 1000" data-val-range-min="50" data-val-range-max="1000">
-                                <span class="input-group-addon add-on input-group-addon-clean">lbs</span>
-                            </div>
-                            <span class="field-validation-valid validationErrorMessage" data-valmsg-for="weight"
-                                  data-valmsg-replace="true"></span>
+                        @*<span class="field-validation-valid validationErrorMessage" data-valmsg-for="eventDate"
+                                data-valmsg-replace="true"></span>*@
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size:small" id="lblWeight">Weight</label>
+                        <div class="input-group input-append">
+                            <input data-val="true" id="weight" name="weight" class="form-control" placeholder="In pounds" data-val-required="*Required!"
+                                   data-val-range="Range between 50 and 1000" data-val-range-min="50" data-val-range-max="1000">
+                            <span class="input-group-addon add-on input-group-addon-clean">lbs</span>
                         </div>
-                        <div class="form-group">
-                            <label style="font-size:small"> Serious injury possible?</label>
-                            <br />
-                            <span style="padding: 20px;"><input type="radio" name="injury" style="padding-right:15px;" data-toggle="modal" data-target="#supportModal" />Yes</span>
-                            <span style="padding: 20px;"><input type="radio" name="injury" checked="checked" />No</span>
-                        </div>
+                        <span class="field-validation-valid validationErrorMessage" data-valmsg-for="weight"
+                              data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size:small"> Serious injury possible?</label>
+                        <br />
+                        <span style="padding: 20px;"><input type="radio" name="injury" style="padding-right:15px;" data-toggle="modal" data-target="#supportModal" />Yes</span>
+                        <span style="padding: 20px;"><input type="radio" name="injury" checked="checked" />No</span>
+                    </div>
 
-                        <div class="form-group">
-                            <label style="font-size:small">Date of first balloon</label>
-                            <div class="input-group input-append date" id="dateOfFirst">
-                                <input type="text" class="form-control" name="date" />
-                                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
+                    <div class="form-group">
+                        <label style="font-size:small">Date of first balloon</label>
+                        <div class="input-group input-append date" id="dateOfFirst">
+                            <input type="text" class="form-control" name="date" />
+                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
                 </div>
+            </div>
 
-            </div>
-            <div class="panel-footer">
-                <button type="submit" class="btn btn-primary">Create</button>
-            </div>
         </div>
+        <div class="panel-footer">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </div>
     }
 
 
@@ -125,66 +93,66 @@
             </div>
         </div>
     </div>
-
+</div>
     @section Scripts{
-        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#eventDateContainer')
-                    .datepicker({
-                        format: 'mm/dd/yyyy',
-                        autoclose: true
-                    })
-                    .on('changeDate', function (e) {
-                        // Revalidate the date field
-                        $('#eventForm').formValidation('revalidateField', 'eventDate');
-                    });
-
-
-                $('#dateOfFirst')
-                    .datepicker({
-                        format: 'mm/dd/yyyy',
-                        autoclose: true
-                    })
-                    .on('changeDate', function (e) {
-                        // Revalidate the date field
-                        $('#eventForm').formValidation('revalidateField', 'dateOfFirst');
-                    });
-                $('#ddlEvents').change(function () {
-                    //$('#lblWeight').html('Weight at <b>' + $('#ddlEvents option:selected').text() + '</b>');
-                    $('#lblWeight').text('Weight at ' + $('#ddlEvents option:selected').text());
-                });
-
-                //$('#addEventForm').formValidation({
-                //    framework: 'bootstrap',
-                //    icon: {
-                //        valid: 'glyphicon glyphicon-ok',
-                //        invalid: 'glyphicon glyphicon-remove',
-                //        validating: 'glyphicon glyphicon-refresh'
-                //    },
-                //    fields: {
-                //        eventDate: {
-                //            // The hidden input will not be ignored
-                //            excluded: false,
-                //            validators: {
-                //                notEmpty: {
-                //                    message: 'The date is required'
-                //                },
-                //                date: {
-                //                    format: 'MM/DD/YYYY',
-                //                    message: 'The date is not a valid'
-                //                }
-                //            }
-                //        }
-                //    }
-                //});
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#eventDateContainer')
+            .datepicker({
+                format: 'mm/dd/yyyy',
+                autoclose: true
+            })
+            .on('changeDate', function (e) {
+                // Revalidate the date field
+                $('#eventForm').formValidation('revalidateField', 'eventDate');
             });
 
-            function openCustSupportDialog() {
 
-            }
-        </script>
+        $('#dateOfFirst')
+            .datepicker({
+                format: 'mm/dd/yyyy',
+                autoclose: true
+            })
+            .on('changeDate', function (e) {
+                // Revalidate the date field
+                $('#eventForm').formValidation('revalidateField', 'dateOfFirst');
+            });
+        $('#ddlEvents').change(function () {
+            //$('#lblWeight').html('Weight at <b>' + $('#ddlEvents option:selected').text() + '</b>');
+            $('#lblWeight').text('Weight at ' + $('#ddlEvents option:selected').text());
+        });
+
+        //$('#addEventForm').formValidation({
+        //    framework: 'bootstrap',
+        //    icon: {
+        //        valid: 'glyphicon glyphicon-ok',
+        //        invalid: 'glyphicon glyphicon-remove',
+        //        validating: 'glyphicon glyphicon-refresh'
+        //    },
+        //    fields: {
+        //        eventDate: {
+        //            // The hidden input will not be ignored
+        //            excluded: false,
+        //            validators: {
+        //                notEmpty: {
+        //                    message: 'The date is required'
+        //                },
+        //                date: {
+        //                    format: 'MM/DD/YYYY',
+        //                    message: 'The date is not a valid'
+        //                }
+        //            }
+        //        }
+        //    }
+        //});
+    });
+
+    function openCustSupportDialog() {
+
+    }
+</script>
     }
 
 
