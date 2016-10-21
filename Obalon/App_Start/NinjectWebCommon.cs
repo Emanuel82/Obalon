@@ -16,6 +16,7 @@ namespace Obalon.App_Start
     using System.Collections.Specialized;
     using System.Reflection;
     using Obalon.Utils;
+    using Obalon.Services;
 
 
     public static class NinjectWebCommon
@@ -73,7 +74,7 @@ namespace Obalon.App_Start
         {
             //kernel.Bind<ILog>().ToMethod(context => LogManager.GetLogger(context.Request.Target.Member.ReflectedType));
             kernel.Bind<ObjectCache>().To<MemoryCache>().InSingletonScope().WithConstructorArgument("name", "DefaultCacheManager").WithConstructorArgument("config", ctx => new NameValueCollection());
-            //kernel.Bind<ITestService>().To<TestService>().InRequestScope();
+            kernel.Bind<IPatientService>().To<PatientService>().InRequestScope();
             
         }
     }

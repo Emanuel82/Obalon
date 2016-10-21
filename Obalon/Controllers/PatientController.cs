@@ -3,27 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Obalon.Services;
+using Obalon.Utils;
+using Obalon.Models;
 
 namespace Obalon.Controllers
 {
     public class PatientController : Controller
     {
+        private readonly IPatientService patientService;
+
+        public PatientController(IPatientService pacientService)
+        {
+            this.patientService = pacientService;
+        }
+
         // GET: Patient
         public ActionResult Index(int id)
         {
-            return View(Models.Patient.Get(id));
-          //  return Content(ceva); //View();
+            //return View(Models.Patient.Get(id));
+            return View();
+            //  return Content(ceva); //View();
         }
 
         // GET: Patient/Details/5
         public ActionResult Details(int id)
         {
+            ResponseItem<PatientModel> patient = patientService.GetPatient(id);
+
             return View();
         }
 
         // GET: Patient/Create
         public ActionResult Add()
         {
+
+            // patientService.Add();
+
             return View();
         }
 
