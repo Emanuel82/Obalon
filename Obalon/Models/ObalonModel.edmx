@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ObalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ObalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Event">
           <Key>
             <PropertyRef Name="EventId" />
@@ -22,6 +22,7 @@
           </Key>
           <Property Name="EventTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EventTypeName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="IsRoutineAction" Type="bit" />
         </EntityType>
         <EntityType Name="Patient">
           <Key>
@@ -71,7 +72,8 @@
             <End Role="Event" EntitySet="Event" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ObalonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -94,6 +96,7 @@
           </Key>
           <Property Name="EventTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EventTypeName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsRoutineAction" Type="Boolean" />
           <NavigationProperty Name="Events" Relationship="Self.FK_Event_EventType" FromRole="EventType" ToRole="Event" />
         </EntityType>
         <EntityType Name="Patient">
@@ -103,10 +106,10 @@
           <Property Name="PatientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DoctorId" Type="Int32" Nullable="false" />
           <Property Name="Gender" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Events" Relationship="Self.FK_Event_Patient" FromRole="Patient" ToRole="Event" />
           <Property Name="Age" Type="Int32" />
           <Property Name="HeightFt" Type="Int32" />
           <Property Name="HeightIn" Type="Int32" />
+          <NavigationProperty Name="Events" Relationship="Self.FK_Event_Patient" FromRole="Patient" ToRole="Event" />
         </EntityType>
         <Association Name="FK_Event_EventType">
           <End Role="EventType" Type="Self.EventType" Multiplicity="1" />
@@ -132,7 +135,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ObalonEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ObalonEntities2" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Events" EntityType="Self.Event" />
           <EntitySet Name="EventTypes" EntityType="Self.EventType" />
           <EntitySet Name="Patients" EntityType="Self.Patient" />
@@ -150,7 +153,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ObalonModelStoreContainer" CdmEntityContainer="ObalonEntities">
+        <EntityContainerMapping StorageEntityContainer="ObalonModelStoreContainer" CdmEntityContainer="ObalonEntities2">
           <EntitySetMapping Name="Events">
             <EntityTypeMapping TypeName="ObalonModel.Event">
               <MappingFragment StoreEntitySet="Event">
@@ -168,18 +171,19 @@
               <MappingFragment StoreEntitySet="EventType">
                 <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
                 <ScalarProperty Name="EventTypeName" ColumnName="EventTypeName" />
+                <ScalarProperty Name="IsRoutineAction" ColumnName="IsRoutineAction" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Patients">
             <EntityTypeMapping TypeName="ObalonModel.Patient">
               <MappingFragment StoreEntitySet="Patient">
-                <ScalarProperty Name="HeightIn" ColumnName="HeightIn" />
-                <ScalarProperty Name="HeightFt" ColumnName="HeightFt" />
-                <ScalarProperty Name="Age" ColumnName="Age" />
                 <ScalarProperty Name="PatientId" ColumnName="PatientId" />
                 <ScalarProperty Name="DoctorId" ColumnName="DoctorId" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="HeightFt" ColumnName="HeightFt" />
+                <ScalarProperty Name="HeightIn" ColumnName="HeightIn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

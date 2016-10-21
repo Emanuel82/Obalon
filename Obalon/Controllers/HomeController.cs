@@ -10,16 +10,17 @@ namespace Obalon.Controllers
 {
     public class HomeController : BaseController
     {
+        private readonly IPatientService patientService;
 
         public HomeController(IPatientService pacientService)
         {
-            this.pacientService = pacientService;
+            this.patientService = pacientService;
         }
 
         public ActionResult Index()
         {
 
-            string x = pacientService.Test();
+            string x = patientService.Test();
 
             return View();
         }

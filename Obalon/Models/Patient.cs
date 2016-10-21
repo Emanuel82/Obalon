@@ -20,15 +20,13 @@ namespace Obalon.Models
         {
             this.Events = new HashSet<Event>();
         }
-
-        #region Mapped Properties
+    
         public int PatientId { get; set; }
         public int DoctorId { get; set; }
         public bool Gender { get; set; }
         public Nullable<int> Age { get; set; }
         public Nullable<int> HeightFt { get; set; }
         public Nullable<int> HeightIn { get; set; }
-        #endregion
 
         #region Unmapped Properties
 
@@ -48,6 +46,7 @@ namespace Obalon.Models
         public int BMIChange { get; set; }
 
         #endregion
+
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Event> Events { get; set; }
