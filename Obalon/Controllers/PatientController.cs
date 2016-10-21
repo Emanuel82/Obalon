@@ -35,7 +35,7 @@ namespace Obalon.Controllers
 
         public ActionResult Details(int id)
         {
-            ResponseItem<PatientModel> patient = patientService.GetPatient(id);
+            ResponseItem<Patient> patient = patientService.GetPatient(id);
 
             return View();
         }

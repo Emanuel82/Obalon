@@ -14,11 +14,11 @@ namespace Obalon.Services
 
     public interface IPatientService
     {
-        ResponseItemList<PatientModel> GetPatients(int doctorId);
+        ResponseItemList<Patient> GetPatients(int doctorId);
 
-        ResponseItemList<PatientModel> SearchPatients(); // tb si niste criterii : .. evenimente ?
+        ResponseItemList<Patient> SearchPatients(); // tb si niste criterii : .. evenimente ?
 
-        ResponseItem<PatientModel> GetPatient(int pacientId);
+        ResponseItem<Patient> GetPatient(int pacientId);
         
         string Test();
     }
@@ -32,9 +32,9 @@ namespace Obalon.Services
 
 
 
-        public ResponseItemList<PatientModel> GetPatients(int doctorId)
+        public ResponseItemList<Patient> GetPatients(int doctorId)
         {
-            ResponseItemList<PatientModel> returnValue = null;
+            ResponseItemList<Patient> returnValue = null;
 
             try
             {
@@ -48,9 +48,9 @@ namespace Obalon.Services
             return returnValue;
         }
 
-        public ResponseItem<PatientModel> GetPatient(int pacientId)
+        public ResponseItem<Patient> GetPatient(int pacientId)
         {
-            ResponseItem<PatientModel> returnValue = null;
+            ResponseItem<Patient> returnValue = null;
 
             try
             {
@@ -65,9 +65,9 @@ namespace Obalon.Services
         }
         
         
-        public ResponseItemList<PatientModel> SearchPatients()
+        public ResponseItemList<Patient> SearchPatients()
         {
-            ResponseItemList<PatientModel> returnValue = null;
+            ResponseItemList<Patient> returnValue = null;
 
             try
             {
