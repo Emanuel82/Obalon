@@ -14,14 +14,12 @@ namespace Obalon.Services
 
     public interface IPatientService
     {
-        ResponseItemList<Patient> GetPatients(int doctorId);
+        ResponseItemList<PatientModel> GetPatients(int doctorId);
 
-        ResponseItemList<Patient> SearchPatients(); // tb si niste criterii : .. evenimente ?
+        ResponseItemList<PatientModel> SearchPatients(); // tb si niste criterii : .. evenimente ?
 
-        ResponseItem<Patient> GetPatient(int pacientId);
-
-        int Add(Patient p);
-
+        ResponseItem<PatientModel> GetPatient(int pacientId);
+        
         string Test();
     }
 
@@ -32,23 +30,15 @@ namespace Obalon.Services
 
         }
 
-        public int Add(Patient patient)
+
+
+        public ResponseItemList<PatientModel> GetPatients(int doctorId)
         {
-            int returnValue = -1;
+            ResponseItemList<PatientModel> returnValue = null;
 
             try
             {
-                using (var db = new Models.ObalonEntities())
-                {
-                    if (patient.DoctorId == 0)
-                        patient.DoctorId = 77777;
 
-                    db.Patients.Add(patient);
-
-                    db.SaveChanges();
-
-                    returnValue = patient.PatientId;
-                }
             }
             catch (Exception ex)
             {
@@ -58,36 +48,13 @@ namespace Obalon.Services
             return returnValue;
         }
 
-        public ResponseItemList<Patient> GetPatients(int doctorId)
+        public ResponseItem<PatientModel> GetPatient(int pacientId)
         {
-            ResponseItemList<Patient> returnValue = new Utils.ResponseItemList<Models.Patient>();
+            ResponseItem<PatientModel> returnValue = null;
 
             try
             {
-                using (var db = new Models.ObalonEntities())
-                {
-                    returnValue.Items = db.Patients.Where(p => p.DoctorId == doctorId).ToList();
-                    returnValue.TotalRecords = returnValue.Items.Count;
-                }
-            }
-            catch (Exception ex)
-            {
-                //logger.Error("Error while calling GetPatients", ex);
-            }
 
-            return returnValue;
-        }
-
-        public ResponseItem<Patient> GetPatient(int pacientId)
-        {
-            ResponseItem<Patient> returnValue = new ResponseItem<Patient>();
-
-            try
-            {
-                using (var db = new Models.ObalonEntities())
-                {
-                    returnValue.Item = db.Patients.Where(p => p.PatientId == pacientId).FirstOrDefault();
-                }
             }
             catch (Exception ex)
             {
@@ -98,9 +65,9 @@ namespace Obalon.Services
         }
         
         
-        public ResponseItemList<Patient> SearchPatients()
+        public ResponseItemList<PatientModel> SearchPatients()
         {
-            ResponseItemList<Patient> returnValue = null;
+            ResponseItemList<PatientModel> returnValue = null;
 
             try
             {

@@ -1,12 +1,9 @@
-﻿@using Obalon.Models;
-@using Obalon.Utils;
-@model ResponseItemList<Patient>
+﻿@model List<Obalon.Models.Patient>
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <style>
     .headingButton {
         padding: 2px 4px 2px 4px;
@@ -57,25 +54,29 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Gender</th>
-                            <th>Age</th>
-                            <th>Height (ft)</th>
-                            <th>Height (inches)</th>
+                            <th>Last Seen</th>
+                            <th>Status</th>
+                            <th>Weight Loss</th>
+                            <th>Total Body Loss</th>
+                            <th>BMI Change</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var patient in Model.Items)
+                        @foreach (var patient in Model)
                         {
                             <tr ondblclick="window.location.href = '/Patient/AddEvent/@patient.PatientId'" onclick="$('.selected').removeClass('selected'); $(this).addClass('selected')">
                                 <td>@patient.PatientId</td>
-                                <td>@(patient.Gender ? "Male" : "Female") </td>
-                                <td>@patient.Age</td>
-                                <td>@patient.HeightFt</td>
-                                <td>@(patient.HeightIn % 12)</td>
+                                <td>@patient.LastSeen</td>
+                                <td>@patient.Status</td>
+                                <td>@patient.WeightLoss lbs</td>
+                                <td>@patient.TotalBodyLoss %</td>
+                                <td>@patient.BMIChange %</td>
                             </tr>
                         }
+
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>
