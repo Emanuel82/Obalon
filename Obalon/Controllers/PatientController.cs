@@ -19,14 +19,20 @@ namespace Obalon.Controllers
         }
 
         // GET: Patient
-        public ActionResult Index(int id)
+        public ActionResult Index(int? id = null)
         {
-            //return View(Models.Patient.Get(id));
-            return View();
-            //  return Content(ceva); //View();
+            if (!id.HasValue)
+                id = 77777;
+
+
+            List<Models.Patient> patients = new List<Models.Patient>();
+            using (var context = new Models.ObalonEntities())
+            {
+                patients = (from p in context.Patients where p.DoctorId == id select p).ToList();
+            }
+            return View(patients);
         }
 
-        // GET: Patient/Details/5
         public ActionResult Details(int id)
         {
             ResponseItem<PatientModel> patient = patientService.GetPatient(id);
@@ -34,7 +40,6 @@ namespace Obalon.Controllers
             return View();
         }
 
-        // GET: Patient/Create
         public ActionResult Add()
         {
 
@@ -43,15 +48,22 @@ namespace Obalon.Controllers
             return View();
         }
 
-        // POST: Patient/Create
         [HttpPost]
-        public ActionResult Create (FormCollection collection)
+        public ActionResult Create(FormCollection collection)
         {
             try
             {
                 using (var db = new Models.ObalonEntities())
                 {
-                    db.Patients.Add(new Models.Patient() { DoctorId = 77777, Gender = false, Height = 1110 });
+                    int docId = 77777;
+                    bool gender = collection["Gender"] == "Male";
+                    int heightFt = Int32.Parse(collection["heigthFt"]);
+                    int heightIn = Int32.Parse(collection["heightIn"]);
+
+                    int age = Int32.Parse(collection["years"]);
+
+
+                    db.Patients.Add(new Models.Patient() { DoctorId = docId, Gender = gender, HeightFt = heightFt, HeightIn = heightIn, Age = age });
                     db.SaveChanges();
                 }
 
@@ -68,13 +80,11 @@ namespace Obalon.Controllers
             return View(Models.PatientModel.Dummy); //RedirectToAction("Index");
         }
 
-        // GET: Patient/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Patient/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -90,13 +100,11 @@ namespace Obalon.Controllers
             }
         }
 
-        // GET: Patient/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Patient/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -114,7 +122,7 @@ namespace Obalon.Controllers
 
 
 
-        
+
 
     }
 }

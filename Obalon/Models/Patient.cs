@@ -12,8 +12,6 @@ namespace Obalon.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Web.Mvc;
-    using System.Linq;
 
     public partial class Patient
     {
@@ -27,90 +25,29 @@ namespace Obalon.Models
         public int PatientId { get; set; }
         public int DoctorId { get; set; }
         public bool Gender { get; set; }
-        public int Height { get; set; }
+        public Nullable<int> Age { get; set; }
+        public Nullable<int> HeightFt { get; set; }
+        public Nullable<int> HeightIn { get; set; }
         #endregion
 
-
-        #region Not Mapped
-        [NotMapped]
-        public int HeightFt { get; set; }
-
-        [NotMapped]
-        public int HeightIn { get; set; }
+        #region Unmapped Properties
 
         [NotMapped]
         public int LastSeen { get; set; }
 
         [NotMapped]
-        public int WeightLoss { get; set; }
+        public int Status { get; set; }
 
         [NotMapped]
-        public int BMIChange { get; set; }
+        public int WeightLoss { get; set; }
 
         [NotMapped]
         public int TotalBodyLoss { get; set; }
 
         [NotMapped]
-        public int Status { get; set; }
-        #endregion
-
-        #region For Display
-
-        [NotMapped]
-        public List<SelectListItem> AvailableEvents
-        {
-            get
-            {
-                List<SelectListItem> eventsSelect = new List<SelectListItem>();
-                using (var db = new Models.ObalonEntities())
-                {
-                    var lastEvent = (from e in db.Events
-                                     where e.PatientId == this.PatientId
-                                     orderby e.Days descending
-                                     select e).FirstOrDefault();
-
-                    List<EventType> evs = new List<EventType>();
-                    if (lastEvent != null)
-                    {
-                        evs = (from ev in db.EventTypes where ev.EventTypeId != lastEvent.EventTypeId orderby ev.EventTypeId select ev).Take(1).ToList();
-                        evs.AddRange((from ev in db.EventTypes where !ev.EventTypeName.Contains("Balloon") orderby ev.EventTypeId select ev).ToList());
-                    }
-                    else
-                    {
-                        evs = (from ev in db.EventTypes where ev.EventTypeName.Contains("1st") || !ev.EventTypeName.Contains("Balloon") orderby ev.EventTypeId select ev).ToList();
-                    }
-                    //               where ev.EventTypeId != 
-                    foreach (var eventType in db.EventTypes)
-                        eventsSelect.Add(new SelectListItem() { Text = eventType.EventTypeName, Value = eventType.EventTypeId.ToString() });
-
-
-                }
-
-
-                //eventsSelect.Add(new SelectListItem() { Text = "Checkup", Value = "0" });
-
-                //if (Status < 1)
-                //    eventsSelect.Add(new SelectListItem() { Text = "1st Balloon", Value = "1" });
-
-                //if (Status < 2)
-                //    eventsSelect.Add(new SelectListItem() { Text = "2nd Balloon", Value = "2" });
-
-                //if (Status < 3)
-                //    eventsSelect.Add(new SelectListItem() { Text = "3rd Balloon", Value = "3" });
-
-                return eventsSelect;
-            }
-        }
+        public int BMIChange { get; set; }
 
         #endregion
-
-        public static List<Patient> Get(int doctorId)
-        {
-            using (var db = new Models.ObalonEntities())
-            {
-                return (from p in db.Patients where p.DoctorId == doctorId select p).ToList();
-            }            
-        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Event> Events { get; set; }
