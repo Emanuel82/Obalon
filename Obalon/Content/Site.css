@@ -7,7 +7,6 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -24,7 +23,43 @@ textarea {
     max-width: 280px;
 }
 
-.main-content
-{
-    min-height:750px;
+.main-content {
+    min-height: 750px;
+}
+
+.headingButton {
+    padding: 2px 4px 2px 4px;
+    width: 15%;
+}
+
+    .headingButton a {
+        color: white;
+        text-align: center;
+        text-decoration: none !important;
+    }
+
+.dataTables_filter {
+    float: right;
+    padding-right: inherit;
+}
+
+.dataTables_length {
+    padding-left: inherit;
+}
+
+td {
+    text-align: center;
+}
+
+th {
+    text-align: center;
+}
+
+tr.selected {
+    background-color: lightcyan;
+}
+
+.validationErrorMessage {
+    color: red;
+    font-size: 12px;
 }

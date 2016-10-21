@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Obalon.Models.Event>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="jumbotron">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+
+            <div class="panel-title">
+                Patients
+
+                <button class="btn btn-primary pull-right headingButton"><a href="/Event/Create/@ViewBag.PatientId">NEW EVENT</a></button>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <table id="patientsTable" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Days</th>
+                            <th>Type</th>
+                            <th>Weight</th>
+                            <th>Serious Injury</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ev in Model)
+                        {
+                            <tr ondblclick="window.location.href = '/Event/Index/@ev.PatientId'" onclick="$('.selected').removeClass('selected'); $(this).addClass('selected')">
+                                <td>@ev.Days</td>
+                                <td>@ev.EventType.EventTypeName</td>
+                                <td>@ev.Weight</td>
+                                <td>@(ev.SeriousInjury == false ? "No" : "TRue")</td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#patientsTable').DataTable();
+        });
+    </script>
+}
+

@@ -21,13 +21,19 @@ namespace Obalon
             routes.MapRoute(
               name: "Patient",
               url: "Patient/{action}/{id}",
-              defaults: new { controller = "Patient", action = "Index", id=UrlParameter.Optional}
-          );
+              defaults: new { controller = "Patient", action = "Index", id = UrlParameter.Optional }
+         );
             routes.MapRoute(
               name: "PatientDetails",
               url: "Patient/{action}/{id}",
               defaults: new { controller = "Patient", action = "Details", id = UrlParameter.Optional }
-          );
+         );
+
+            routes.MapRoute(
+           name: "Events",
+           url: "Event/{action}/{id}",
+           defaults: new { controller = "Events", action = "Index", id = UrlParameter.Optional }
+         );
 
             routes.MapRoute(
                 name: "Default",
