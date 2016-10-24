@@ -12,7 +12,6 @@ namespace Obalon.Controllers
     public class PatientController : Controller
     {
         private readonly IPatientService patientService;
-        private ObalonEntities db = new ObalonEntities();
 
         public PatientController(IPatientService pacientService)
         {
@@ -22,12 +21,12 @@ namespace Obalon.Controllers
         // GET: Patient
         public ActionResult Index(int? id = null)
         {
+            ResponseItemList<Patient> patients = null;
+
             if (!id.HasValue)
-                id = 77777;
-
-
-            List<Models.Patient> patients = new List<Models.Patient>();
-            patients = (from p in db.Patients where p.DoctorId == id select p).ToList();
+                patients = patientService.GetPatients(77777);
+            else
+                patients = patientService.GetPatients(id.Value);
 
             return View(patients);
         }
@@ -41,9 +40,6 @@ namespace Obalon.Controllers
 
         public ActionResult Add()
         {
-
-            // patientService.Add();
-
             return View();
         }
 
@@ -52,16 +48,13 @@ namespace Obalon.Controllers
         {
             try
             {
-                int docId = 77777;
                 bool gender = collection["Gender"] == "Male";
                 int heightFt = Int32.Parse(collection["heigthFt"]);
                 int heightIn = Int32.Parse(collection["heightIn"]);
 
                 int age = Int32.Parse(collection["years"]);
 
-
-                db.Patients.Add(new Models.Patient() { DoctorId = docId, Gender = gender, HeightFt = heightFt, HeightIn = heightIn, Age = age });
-                db.SaveChanges();
+                patientService.Add(new Patient() { Gender = gender, HeightFt = heightFt, HeightIn = heightIn, Age = age });
 
                 return RedirectToAction("Index");
             }

@@ -29,7 +29,6 @@
                             <th>Age</th>
                             @*<th>No. Events</th>*@
                             <th>Height</th>
-                            <th></th>
                             <th>Gender</th>
                             <th>BMI Change</th>
                             <th>Add Event</th>
@@ -42,11 +41,10 @@
                                 <td>@patient.PatientId</td>
                                 <td>@patient.Age</td>
                                 @*<td>@((patient.Events != null) ? patient.Events.Count : 0)</td>*@
-                                <td>@patient.HeightFt</td>
-                                <td>@patient.HeightIn</td>
+                                <td>@(string.Concat(patient.HeightFt, "''", " ", patient.HeightIn, "'"))</td>
                                 <td>@(patient.Gender ? "male" : "female")</td>
                                 <td>@patient.BMIChange %</td>
-                                <td onclick="window.location.href = '/Event/Create/@patient.PatientId'"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></td>
+                                <td style="border:1px solid red;" onclick="window.location.href = '/Event/Create/@patient.PatientId'"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></td>
                             </tr>
                         }
 

@@ -19,7 +19,7 @@ namespace Obalon.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Patient()
         {
-            this.Events = new HashSet<Event>();
+            this.Events = new List<Event>();
         }
 
         public int PatientId { get; set; }
