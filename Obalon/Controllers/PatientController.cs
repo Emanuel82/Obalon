@@ -12,6 +12,7 @@ namespace Obalon.Controllers
     public class PatientController : Controller
     {
         private readonly IPatientService patientService;
+        private ObalonEntities db = new ObalonEntities();
 
         public PatientController(IPatientService pacientService)
         {
@@ -26,10 +27,8 @@ namespace Obalon.Controllers
 
 
             List<Models.Patient> patients = new List<Models.Patient>();
-            using (var context = new Models.ObalonEntities())
-            {
-                patients = (from p in context.Patients where p.DoctorId == id select p).ToList();
-            }
+            patients = (from p in db.Patients where p.DoctorId == id select p).ToList();
+
             return View(patients);
         }
 
@@ -53,19 +52,16 @@ namespace Obalon.Controllers
         {
             try
             {
-                using (var db = new Models.ObalonEntities())
-                {
-                    int docId = 77777;
-                    bool gender = collection["Gender"] == "Male";
-                    int heightFt = Int32.Parse(collection["heigthFt"]);
-                    int heightIn = Int32.Parse(collection["heightIn"]);
+                int docId = 77777;
+                bool gender = collection["Gender"] == "Male";
+                int heightFt = Int32.Parse(collection["heigthFt"]);
+                int heightIn = Int32.Parse(collection["heightIn"]);
 
-                    int age = Int32.Parse(collection["years"]);
+                int age = Int32.Parse(collection["years"]);
 
 
-                    db.Patients.Add(new Models.Patient() { DoctorId = docId, Gender = gender, HeightFt = heightFt, HeightIn = heightIn, Age = age });
-                    db.SaveChanges();
-                }
+                db.Patients.Add(new Models.Patient() { DoctorId = docId, Gender = gender, HeightFt = heightFt, HeightIn = heightIn, Age = age });
+                db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
@@ -77,7 +73,7 @@ namespace Obalon.Controllers
 
         public ActionResult AddEvent(int id)
         {
-            return View(Models.PatientModel.Dummy); //RedirectToAction("Index");
+            return View(); //RedirectToAction("Index");
         }
 
         public ActionResult Edit(int id)

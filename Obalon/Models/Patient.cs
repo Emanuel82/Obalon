@@ -12,6 +12,7 @@ namespace Obalon.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
 
     public partial class Patient
     {
@@ -20,7 +21,7 @@ namespace Obalon.Models
         {
             this.Events = new HashSet<Event>();
         }
-    
+
         public int PatientId { get; set; }
         public int DoctorId { get; set; }
         public bool Gender { get; set; }
@@ -45,5 +46,29 @@ namespace Obalon.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Event> Events { get; set; }
+
+        [NotMapped]
+        public int LastUserEventType
+        {
+            get
+            {
+                try
+                {
+                    using (var db = new Models.ObalonEntities())
+                    {
+                        Event eve = (from ev in db.Events
+                                     where (ev.PatientId == this.PatientId && ev.EventType.IsRoutineAction == false)
+                                     orderby ev.EventId descending
+                                     select ev).SingleOrDefault();
+                        return eve != null ? eve.EventTypeId : -1;
+                    }
+                }
+                catch (System.Exception ex)
+                {
+
+                }
+                return -1;
+            }
+        }
     }
 }

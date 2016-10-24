@@ -42,10 +42,10 @@ namespace Obalon.Controllers
         }
 
         // GET: Events/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            ViewBag.EventTypeId = new SelectList(db.EventTypes, "EventTypeId", "EventTypeName");
-            ViewBag.PatientId = new SelectList(db.Patients, "PatientId", "PatientId");
+            ViewBag.EventTypes = Obalon.Services.EventService.AvailableEvents(id); //new SelectList(db.EventTypes, "EventTypeId", "EventTypeName");
+            ViewBag.PatientId = id;
             return View();
         }
 
@@ -54,18 +54,35 @@ namespace Obalon.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "EventId,EventTypeId,PatientId,Days,Weight,SeriousInjury")] Event @event)
+        public async Task<ActionResult> Create(FormCollection collection)//[Bind(Include = "EventId,EventTypeId,PatientId,Days,Weight,SeriousInjury")] Event @event)
         {
             if (ModelState.IsValid)
             {
-                db.Events.Add(@event);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                string inj = collection["injury"];
+                int eventTypeId, weight, patientId;
+                DateTime eventDate, firstBalloonDate;
+
+                if (int.TryParse(collection["ddlEvents"], out eventTypeId)
+                    && DateTime.TryParseExact(collection["eventDate"], "mm/dd/yyyy", null, System.Globalization.DateTimeStyles.None, out eventDate)
+                    && DateTime.TryParseExact(collection["firstBalloonDate"], "mm/dd/yyyy", null, System.Globalization.DateTimeStyles.None, out firstBalloonDate)
+                    && int.TryParse(collection["weight"], out weight)
+                    && int.TryParse(collection["patient"], out patientId))
+                {                   
+                    Event evt = new Event() {
+                        PatientId = patientId,
+                        EventTypeId = eventTypeId,
+                        Days = (int)(eventDate- firstBalloonDate).TotalDays,
+                        Weight = weight,
+                        SeriousInjury = (inj == "yes")
+                    };
+
+                    db.Events.Add(evt);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "Event", new { id = patientId });
+                }
             }
 
-            ViewBag.EventTypeId = new SelectList(db.EventTypes, "EventTypeId", "EventTypeName", @event.EventTypeId);
-            ViewBag.PatientId = new SelectList(db.Patients, "PatientId", "PatientId", @event.PatientId);
-            return View(@event);
+            return RedirectToAction("Index");
         }
 
         // GET: Events/Edit/5

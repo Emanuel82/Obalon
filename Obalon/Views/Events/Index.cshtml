@@ -11,12 +11,10 @@
         <div class="panel-heading">
 
             <div class="panel-title">
-                Patients
-
+                <b>Patient no. @ViewBag.PatientId</b>
                 <button class="btn btn-primary pull-right headingButton"><a href="/Event/Create/@ViewBag.PatientId">NEW EVENT</a></button>
             </div>
         </div>
-
         <div class="panel-body">
             <div class="row">
                 <table id="patientsTable" class="table table-hover">
@@ -31,11 +29,11 @@
                     <tbody>
                         @foreach (var ev in Model)
                         {
-                            <tr ondblclick="window.location.href = '/Event/Index/@ev.PatientId'" onclick="$('.selected').removeClass('selected'); $(this).addClass('selected')">
+                            <tr onclick="$('.selected').removeClass('selected'); $(this).addClass('selected')">
                                 <td>@ev.Days</td>
                                 <td>@ev.EventType.EventTypeName</td>
                                 <td>@ev.Weight</td>
-                                <td>@(ev.SeriousInjury == false ? "No" : "TRue")</td>
+                                <td>@(ev.SeriousInjury == false ? "No" : "True")</td>
 
                             </tr>
                         }

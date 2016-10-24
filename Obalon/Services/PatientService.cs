@@ -84,7 +84,7 @@ namespace Obalon.Services
 
             try
             {
-                using (var db = new Models.ObalonEntities())
+                using (var db = new ObalonEntities())
                 {
                     returnValue.Item = db.Patients.Where(p => p.PatientId == pacientId).FirstOrDefault();
                 }
@@ -113,6 +113,8 @@ namespace Obalon.Services
 
             return returnValue;
         }
+
+  
 
         public string Test()
         {

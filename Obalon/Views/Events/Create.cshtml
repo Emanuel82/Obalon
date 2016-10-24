@@ -5,71 +5,173 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
-{
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
+
+
+<div class="jumbotron">
+    @using (Html.BeginForm("Create", "Event", FormMethod.Post, new { id = "eventForm" }))
+    {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Event</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.EventTypeId, "EventTypeId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("EventTypeId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.EventTypeId, "", new { @class = "text-danger" })
-            </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Add Event
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.PatientId, "PatientId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("PatientId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.PatientId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Days, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Days, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Days, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="form-group">
+                        <div class="input-group input-append">
+                            <input data-val="true" type="number" style="display:none" class="form-control" id="patient" name="patient" value="@ViewBag.PatientId" />
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SeriousInjury, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.SeriousInjury)
-                    @Html.ValidationMessageFor(model => model.SeriousInjury, "", new { @class = "text-danger" })
+
+
+                    <div class="form-group">
+                        <fieldset disabled>
+                            <label style="font-size:small">Patient ID</label>
+                            <input data-val="true" id="patientId" class="form-control" value="@ViewBag.PatientId" />
+                        </fieldset>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size:small">Event</label>
+                        @Html.DropDownList("ddlEvents", (List<SelectListItem>
+                            )ViewBag.EventTypes, new Dictionary<string, Object>
+                                { { "class", "form-control" }, { "data-val-required", "*Required!" } } )
+                                <span class="field-validation-valid validationErrorMessage" data-valmsg-for="ddlEvents"
+                                      data-valmsg-replace="true"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="font-size:small">Date</label>
+                        <div class="input-group input-append date" id="eventDateContainer">
+                            <input class="form-control" id="eventDate" name="eventDate" data-val="true" data-val-required="*Required" />
+                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <span id="eventDateValidator" class="field-validation-valid validationErrorMessage" data-valmsg-for="eventDate"
+                              data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size:small" id="lblWeight">Weight</label>
+                        <div class="input-group input-append">
+                            <input data-val="true" id="weight" name="weight" class="form-control" placeholder="In pounds" data-val-required="*Required!"
+                                   data-val-range="Range between 50 and 1000" data-val-range-min="50" data-val-range-max="1000">
+                            <span class="input-group-addon add-on input-group-addon-clean">lbs</span>
+                        </div>
+                        <span class="field-validation-valid validationErrorMessage" data-valmsg-for="weight"
+                              data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size:small"> Serious injury possible?</label>
+                        <br />
+                        <span style="padding: 20px;"><input value="yes" type="radio" id="injuryYes" name="injury" style="padding-right:15px;" data-toggle="modal" data-target="#supportModal" />Yes</span>
+                        <span style="padding: 20px;"><input value="no" type="radio" id="injuryNo" name="injury" checked="checked" />No</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="font-size:small">Date of first balloon</label>
+                        <div class="input-group input-append date" id="dateOfFirst">
+                            <input type="text" class="form-control" id="firstBalloonDate" name="firstBalloonDate" data-val="true" data-val-required="*Required" />
+                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <span class="field-validation-valid validationErrorMessage" data-valmsg-for="firstBalloonDate"
+                              data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="panel-footer">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </div>
+    }
+
+
+    <div class="modal fade" id="supportModal" role="dialog">
+        <div class="vertical-alignment-helper">
+            <div class="modal-dialog vertical-align-center">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Customer Support</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>In case of injury please call support at <b>07434324254534</b></p>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+    @section Scripts{
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#eventDateContainer')
+            .datepicker({
+                format: 'mm/dd/yyyy',
+                autoclose: true
+            })
+            .on('changeDate', function (e) {
+                if (($('#eventDate').val() && $('#firstBalloonDate').val()) && validateDates() == false)
+                    addErrorMessage('eventDateLess', 'Date must be greater than 1st balloon insert', $('#eventDate'), $('#eventDateContainer'));
+                else
+                    removeErrorMessage('eventDateLess', $('#eventDate'));
+            });
+
+
+        $('#dateOfFirst')
+            .datepicker({
+                format: 'mm/dd/yyyy',
+                autoclose: true
+            })
+            .on('changeDate', function (e) {
+                if (($('#eventDate').val() && $('#firstBalloonDate').val()) && validateDates() == false)
+                    addErrorMessage('firstDateLess', 'Date must be smaller than current event date', $('#firstBalloonDate'), $('#dateOfFirst'));
+                else
+                    removeErrorMessage('firstDateLess', $('#dateOfFirst'));
+            });
+        $('#ddlEvents').change(function () {
+            $('#lblWeight').text('Weight at ' + $('#ddlEvents option:selected').text());
+        });
+
+
+    });
+
+    function addErrorMessage(elemId, text, parent, afterElem) {
+        parent.removeClass('valid').addClass('input-validation-error');
+        parent.val('');
+        if (!$('#' + elemId).text()) {
+            var validatorSpan = $('<span>').attr('id', elemId).text(text).addClass('validationErrorMessage').addClass('field-validation-error');
+            validatorSpan.insertAfter(afterElem);
+        }
+    }
+
+    function removeErrorMessage(elemId, parent) {
+        parent.addClass('valid').removeClass('input-validation-error');
+        $('#' + elemId).remove();
+    }
+
+    function addDateErrorFunctionality(elemId, text, parent, afterElem, compareTo) {
+        if ((parent.val() && compareTo.val()) && validateDates() == false)
+            addErrorMessage(elemId, text, parent, afterElem);
+        else
+            removeErrorMessage(elemId, parent);
+    }
+
+    function validateDates() {
+        return (new Date($('#eventDate').val()) > new Date($('#firstBalloonDate').val()));
+    }
+</script>
+    }
+
+
+

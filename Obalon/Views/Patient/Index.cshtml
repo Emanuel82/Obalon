@@ -4,39 +4,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style>
-    .headingButton {
-        padding: 2px 4px 2px 4px;
-        width: 15%;
-    }
 
-        .headingButton a {
-            color: white;
-            text-align: center;
-            text-decoration: none !important;
-        }
-
-    .dataTables_filter {
-        float: right;
-        padding-right: inherit;
-    }
-
-    .dataTables_length {
-        padding-left: inherit;
-    }
-
-    td {
-        text-align: center;
-    }
-
-    th {
-        text-align: center;
-    }
-
-    tr.selected {
-   background-color :lightcyan;
-    }
-</style>
 <div class="jumbotron">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -59,18 +27,20 @@
                             <th>Weight Loss</th>
                             <th>Total Body Loss</th>
                             <th>BMI Change</th>
+                            <th>Add Event</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var patient in Model)
                         {
-                            <tr ondblclick="window.location.href = '/Patient/AddEvent/@patient.PatientId'" onclick="$('.selected').removeClass('selected'); $(this).addClass('selected')">
+                            <tr ondblclick="window.location.href = '/Event/Index/@patient.PatientId'" onclick="$('.selected').removeClass('selected'); $(this).addClass('selected')">
                                 <td>@patient.PatientId</td>
                                 <td>@patient.LastSeen</td>
                                 <td>@patient.Status</td>
                                 <td>@patient.WeightLoss lbs</td>
                                 <td>@patient.TotalBodyLoss %</td>
                                 <td>@patient.BMIChange %</td>
+                                <td onclick="window.location.href = '/Event/Create/@patient.PatientId'"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></td>
                             </tr>
                         }
 

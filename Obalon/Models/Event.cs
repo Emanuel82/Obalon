@@ -11,7 +11,9 @@ namespace Obalon.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Linq;
+    using System.Web.Mvc;
+
     public partial class Event
     {
         public int EventId { get; set; }
@@ -20,8 +22,14 @@ namespace Obalon.Models
         public int Days { get; set; }
         public int Weight { get; set; }
         public bool SeriousInjury { get; set; }
-    
+
         public virtual EventType EventType { get; set; }
         public virtual Patient Patient { get; set; }
+
+       // [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        
+
+
+
     }
 }
