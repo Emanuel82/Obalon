@@ -1,4 +1,8 @@
-﻿@model List<Obalon.Models.Patient>
+﻿@using Obalon.Utils;
+@using Obalon.Models;
+@using System;
+
+@model ResponseItemList<Patient>
 
 @{
     ViewBag.Title = "Index";
@@ -54,22 +58,24 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Last Seen</th>
-                            <th>Status</th>
-                            <th>Weight Loss</th>
-                            <th>Total Body Loss</th>
+                            <th>Age</th>
+                            @*<th>No. Events</th>*@
+                            <th>Height</th>
+                            <th></th>
+                            <th>Gender</th>
                             <th>BMI Change</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var patient in Model)
+                        @foreach (var patient in Model.Items)
                         {
                             <tr ondblclick="window.location.href = '/Patient/AddEvent/@patient.PatientId'" onclick="$('.selected').removeClass('selected'); $(this).addClass('selected')">
                                 <td>@patient.PatientId</td>
-                                <td>@patient.LastSeen</td>
-                                <td>@patient.Status</td>
-                                <td>@patient.WeightLoss lbs</td>
-                                <td>@patient.TotalBodyLoss %</td>
+                                <td>@patient.Age</td>
+                                @*<td>@((patient.Events != null) ? patient.Events.Count : 0)</td>*@
+                                <td>@patient.HeightFt</td>
+                                <td>@patient.HeightIn</td>
+                                <td>@(patient.Gender ? "male" : "female")</td>
                                 <td>@patient.BMIChange %</td>
                             </tr>
                         }
