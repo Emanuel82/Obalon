@@ -37,20 +37,20 @@
                     <tbody>
                         @foreach (var patient in Model.Items)
                         {
-                            <tr ondblclick="window.location.href = '/Event/Index/@patient.PatientId'" onclick="$('.selected').removeClass('selected'); $(this).addClass('selected')">
+                            <tr title="Double Click to see related events." ondblclick="window.location.href = '/Event/Index/@patient.PatientId'" onclick="$('.selected').removeClass('selected'); $(this).addClass('selected')">
                                 <td>@patient.PatientId</td>
                                 <td>@patient.Age</td>
                                 @*<td>@((patient.Events != null) ? patient.Events.Count : 0)</td>*@
                                 <td>@(string.Concat(patient.HeightFt, "''", " ", patient.HeightIn, "'"))</td>
                                 <td>@(patient.Gender ? "male" : "female")</td>
                                 <td>@patient.BMIChange %</td>
-                                <td style="border:1px solid red;" onclick="window.location.href = '/Event/Create/@patient.PatientId'"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></td>
+                                <td title="Click to add a new event." onclick="window.location.href = '/Event/Create/@patient.PatientId'"><span  class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></td>
                             </tr>
                         }
 
                     </tbody>
                 </table>
-
+                
             </div>
         </div>
     </div>

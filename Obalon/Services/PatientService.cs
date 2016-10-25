@@ -66,7 +66,7 @@ namespace Obalon.Services
             {
                 using (var db = new Models.ObalonEntities())
                 {
-                    returnValue.Items = db.Patients.Where(p => p.DoctorId == doctorId).ToList();
+                    returnValue.Items = db.Patients.Where(p => p.DoctorId == doctorId).OrderByDescending(p => p.PatientId).ToList();
                     returnValue.TotalRecords = returnValue.Items.Count;
                 }
             }

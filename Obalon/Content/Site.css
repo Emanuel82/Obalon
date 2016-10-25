@@ -91,3 +91,7 @@ tr.selected {
     margin: 0 auto;
     pointer-events: all;
 }
+
+span.glyphicon-plus-sign {
+        font-size: 1.2em;
+    }

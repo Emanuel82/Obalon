@@ -14,9 +14,12 @@ namespace Obalon.Services
 
         ResponseItemList<Event> SearchEvents(); // tb si niste criterii : .. evenimente ?
 
-        ResponseItem<Event> GetEvent(int pacientId);
 
-        List<SelectListItem> AvailableEvents(int patientId);
+
+        bool Save(Event evt);
+        // ResponseItem<Event> GetEvent(int pacientId);
+
+        List<SelectListItem> AvailableEventTypes(int patientId);
 
         int Add(Event p);
 
@@ -24,8 +27,8 @@ namespace Obalon.Services
     }
     public class EventService : IEventService
     {
-        public static List<SelectListItem> AvailableEvents(int patientId)
-         {
+        public List<SelectListItem> AvailableEventTypes(int patientId)
+        {
 
             List<SelectListItem> eventsSelect = new List<SelectListItem>();
             List<EventType> eventTypes = new List<EventType>();
@@ -65,21 +68,50 @@ namespace Obalon.Services
             return eventsSelect;
         }
 
+        public bool Save(Event evt)
+        {
+            try
+            {
+                using (var db = new Models.ObalonEntities())
+                {
+                    db.Events.Add(evt);
+                    db.SaveChanges();
+                }
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                return false;
+            }
+        }
 
         public int Add(Event e)
         {
             throw new NotImplementedException();
         }
 
-        public ResponseItem<Event> GetEvent(int pacientId)
-        {
-            throw new NotImplementedException();
-        }
-
         public ResponseItemList<Event> GetEvents(int patientId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var db = new Models.ObalonEntities())
+                {
+                    ResponseItemList<Event> returnValue = new Utils.ResponseItemList<Event>();
+                    returnValue.Items = db.Events.Include("EventType").Where(ev => ev.PatientId == patientId).OrderByDescending(ev => ev.EventId).ToList(); 
+                    // (from ev in db.Events where ev.PatientId == pacientId select ev).ToList();
+                    returnValue.TotalRecords = returnValue.Items.Count;
+                    return returnValue;
+                }
+            }
+            catch (System.Exception ex) { }
+
+            return null;
         }
+
+        //public ResponseItemList<Event> GetEvents(int patientId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public ResponseItemList<Event> SearchEvents()
         {
@@ -87,11 +119,6 @@ namespace Obalon.Services
         }
 
         public string Test()
-        {
-            throw new NotImplementedException();
-        }
-
-        List<SelectListItem> IEventService.AvailableEvents(int patientId)
         {
             throw new NotImplementedException();
         }
