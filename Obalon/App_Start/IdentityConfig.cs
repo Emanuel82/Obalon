@@ -40,7 +40,7 @@ namespace Obalon
         {
         }
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
+        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
@@ -81,7 +81,7 @@ namespace Obalon
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = 
+                manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
@@ -106,4 +106,46 @@ namespace Obalon
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
     }
+
+
+
+    public class AuthRepository : IDisposable
+    {
+        private ApplicationDbContext _ctx;
+
+        private UserManager<IdentityUser> _userManager;
+
+        public AuthRepository()
+        {
+            _ctx = new ApplicationDbContext();
+            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_ctx));
+        }
+
+        public async Task<IdentityResult> RegisterUser(RegisterViewModel userModel)
+        {
+            IdentityUser user = new IdentityUser
+            {
+                UserName = userModel.Email
+            };
+
+            var result = await _userManager.CreateAsync(user, userModel.Password);
+
+            return result;
+        }
+
+        public async Task<IdentityUser> FindUser(string userName, string password)
+        {
+            IdentityUser user = await _userManager.FindAsync(userName, password);
+
+            return user;
+        }
+
+        public void Dispose()
+        {
+            _ctx.Dispose();
+            _userManager.Dispose();
+
+        }
+    }
+
 }

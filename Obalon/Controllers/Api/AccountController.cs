@@ -1,64 +1,87 @@
-﻿//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using System.Web;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
 //using System.Web.Mvc;
-//using System.Web.Http;
-//using System.Net.Http;
-//using Microsoft.Owin.Security;
-//using Microsoft.Owin.Security.Cookies;
-//using Obalon.Security;
-//using Obalon.Services;
+using System.Web.Http;
+using System.Net.Http;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using Obalon.Services;
+using Obalon.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
-//namespace Obalon.Controllers.Api
-//{
-//    //[Authorize]
-//    //[RoutePrefix(ApiPrefix.Reg + "Account")]            // we make this public because user has not selected a certificate
-//    public class AccountController : ApiController
-//    {
-//        readonly IUserService userService;
-//        IAuthenticationManager Authentication { get { return HttpContext.Current.GetOwinContext().Authentication; } }
+namespace Obalon.Controllers.Api
+{
+    public class AccountController : ApiController
+    {
+        private AuthRepository _repo = null;
 
-//        public AccountController(IUserService userService)
-//        {
-//            this.userService = userService;
-//        }
+        public AccountController()
+        {
+            _repo = new AuthRepository();
+        }
 
-//        [HttpGet]
-//        public User GetCurrentUser()
-//        {
-//            return userService.CurrentUser;
-//        }
+        // POST api/Account/Register
+        [AllowAnonymous]
+        [Route("Register")]
+        public async Task<IHttpActionResult> Register(RegisterViewModel userModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            IdentityResult result = await _repo.RegisterUser(userModel);
 
-//        [HttpGet]
-//        public string GetCurrentUserName()
-//        {
-//            // Based on the OWIN authentication, finds the current authenticated username.     
-//            return Authentication.User.Identity.Name;
-//        }
+            IHttpActionResult errorResult = GetErrorResult(result);
 
-//        [HttpGet]
-//        public bool GetIsLoggedIn()
-//        {
-//            // Based on the OWIN authentication, tells if the user is authenticated.
-//            return Authentication.User.Identity.IsAuthenticated;
-//        }
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
 
-//        [HttpGet]
-//        async public Task<IEnumerable<string>> GetCurrentUserRoles()
-//        {
-//            // Get the userID from the Request context, and pass the ID into the usermanager to get the current user roles.
-//            return await Task.Factory.StartNew(() => Enumerable.Empty<string>());
-//            //return await UserManager.GetRolesAsync(Request.GetOwinContext().Authentication.User.Identity.GetUserId());
-//        }
+            return Ok();
+        }
 
-//        [HttpPost]
-//        public async Task<Ihh> Logout()
-//        {
-//            await userService.Logout();
-//            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
-//            return Ok();
-//        }
-//    }
-//}
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _repo.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
+
+        private IHttpActionResult GetErrorResult(IdentityResult result)
+        {
+            if (result == null)
+            {
+                return InternalServerError();
+            }
+
+            if (!result.Succeeded)
+            {
+                if (result.Errors != null)
+                {
+                    foreach (string error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error);
+                    }
+                }
+
+                if (ModelState.IsValid)
+                {
+                    // No ModelState errors are available to send, so just return an empty BadRequest.
+                    return BadRequest();
+                }
+
+                return BadRequest(ModelState);
+            }
+
+            return null;
+        }
+    }
+}
