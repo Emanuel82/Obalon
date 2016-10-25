@@ -14,8 +14,6 @@ namespace Obalon.Services
 
         ResponseItemList<Event> SearchEvents(); // tb si niste criterii : .. evenimente ?
 
-
-
         bool Save(Event evt);
         // ResponseItem<Event> GetEvent(int pacientId);
 
@@ -23,20 +21,21 @@ namespace Obalon.Services
 
         int Add(Event p);
 
-        string Test();
     }
+
     public class EventService : IEventService
     {
         public List<SelectListItem> AvailableEventTypes(int patientId)
         {
-
             List<SelectListItem> eventsSelect = new List<SelectListItem>();
             List<EventType> eventTypes = new List<EventType>();
 
             using (var db = new ObalonEntities())
             {
                 Patient patient = db.Patients.Find(patientId);
+
                 eventTypes.AddRange(from ev in db.EventTypes where ev.IsRoutineAction == true select ev);
+
                 if (patient != null && patient.Events.Count > 0 && patient.LastUserEventType > 0)
                 {
                     eventTypes.Add((from evt in db.EventTypes
@@ -92,35 +91,29 @@ namespace Obalon.Services
 
         public ResponseItemList<Event> GetEvents(int patientId)
         {
+            ResponseItemList<Event> returnValue = new Utils.ResponseItemList<Event>();
+
             try
             {
                 using (var db = new Models.ObalonEntities())
                 {
-                    ResponseItemList<Event> returnValue = new Utils.ResponseItemList<Event>();
+                    
                     returnValue.Items = db.Events.Include("EventType").Where(ev => ev.PatientId == patientId).OrderByDescending(ev => ev.EventId).ToList(); 
                     // (from ev in db.Events where ev.PatientId == pacientId select ev).ToList();
                     returnValue.TotalRecords = returnValue.Items.Count;
-                    return returnValue;
+                   
                 }
             }
             catch (System.Exception ex) { }
 
-            return null;
+            return returnValue;
         }
-
-        //public ResponseItemList<Event> GetEvents(int patientId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        
 
         public ResponseItemList<Event> SearchEvents()
         {
             throw new NotImplementedException();
         }
 
-        public string Test()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

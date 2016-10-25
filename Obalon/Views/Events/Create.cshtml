@@ -39,24 +39,24 @@
                             <input data-val="true" id="patientId" class="form-control" value="@ViewBag.PatientId" />
                         </fieldset>
                     </div>
+
                     <div class="form-group">
                         <label style="font-size:small">Event</label>
-                        @Html.DropDownList("ddlEvents", (List<SelectListItem>
-                            )ViewBag.EventTypes, new Dictionary<string, Object>
+                        @Html.DropDownList("ddlEvents", (List<SelectListItem>)ViewBag.EventTypes, new Dictionary<string, Object>
                                 { { "class", "form-control" }, { "data-val-required", "*Required!" } } )
-                                <span class="field-validation-valid validationErrorMessage" data-valmsg-for="ddlEvents"
-                                      data-valmsg-replace="true"></span>
+                        <span class="field-validation-valid validationErrorMessage" data-valmsg-for="ddlEvents" data-valmsg-replace="true"></span>
                     </div>
 
                     <div class="form-group">
                         <label style="font-size:small">Date</label>
                         <div class="input-group input-append date" id="eventDateContainer">
                             <input class="form-control" id="eventDate" name="eventDate" data-val="true" data-val-required="*Required" />
-                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <span class="input-group-addon add-on"><i class="glyphicon glyphicon-calendar"></i></span>
                         </div>
                         <span id="eventDateValidator" class="field-validation-valid validationErrorMessage" data-valmsg-for="eventDate"
                               data-valmsg-replace="true"></span>
                     </div>
+
                     <div class="form-group">
                         <label style="font-size:small" id="lblWeight">Weight</label>
                         <div class="input-group input-append">
@@ -67,6 +67,7 @@
                         <span class="field-validation-valid validationErrorMessage" data-valmsg-for="weight"
                               data-valmsg-replace="true"></span>
                     </div>
+
                     <div class="form-group">
                         <label style="font-size:small"> Serious injury possible?</label>
                         <br />
@@ -74,11 +75,12 @@
                         <span style="padding: 20px;"><input value="no" type="radio" id="injuryNo" name="injury" checked="checked" />No</span>
                     </div>
 
-                    <div class="form-group">
+                    <div id="firstBaloonDateGroup" class="form-group">
                         <label style="font-size:small">Date of first balloon</label>
-                        <div class="input-group input-append date" id="dateOfFirst">
+                        <div class="input-group input-append date" id="dateOfFirst" >
                             <input type="text" class="form-control" id="firstBalloonDate" name="firstBalloonDate" data-val="true" data-val-required="*Required" />
-                            <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <span class="input-group-addon add-on">
+                            <i class="glyphicon glyphicon-calendar"></i></span>
                         </div>
                         <span class="field-validation-valid validationErrorMessage" data-valmsg-for="firstBalloonDate"
                               data-valmsg-replace="true"></span>
@@ -89,6 +91,7 @@
         </div>
         <div class="panel-footer">
             <button type="submit" class="btn btn-primary">Create</button>
+            <button type="button" onclick="window.history.back();" class="btn btn-default">Cancel</button>
         </div>
     </div>
     }
@@ -115,6 +118,9 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        //var currentDate = new Date();
+
         $('#eventDateContainer')
             .datepicker({
                 format: 'mm/dd/yyyy',
@@ -127,6 +133,7 @@
                     removeErrorMessage('eventDateLess', $('#eventDate'));
             });
 
+        //$('#eventDateContainer').datepicker("setDate", currentDate);
 
         $('#dateOfFirst')
             .datepicker({
