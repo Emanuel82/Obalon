@@ -29,40 +29,43 @@ namespace Obalon.Services
         {
             List<SelectListItem> eventsSelect = new List<SelectListItem>();
             List<EventType> eventTypes = new List<EventType>();
-
-            using (var db = new ObalonEntities())
+            try
             {
-                Patient patient = db.Patients.Find(patientId);
-
-                eventTypes.AddRange(from ev in db.EventTypes where ev.IsRoutineAction == true select ev);
-
-                if (patient != null && patient.Events.Count > 0 && patient.LastUserEventType > 0)
+                using (var db = new ObalonEntities())
                 {
-                    eventTypes.Add((from evt in db.EventTypes
-                                    where evt.EventTypeId != patient.LastUserEventType
-                                    && evt.IsRoutineAction == false
-                                    orderby evt.EventTypeId
-                                    select evt)
-                                        .FirstOrDefault());
+                    Patient patient = db.Patients.Find(patientId);
+
+                    eventTypes.AddRange(from ev in db.EventTypes where ev.IsRoutineAction == true select ev);
+
+                    if (patient != null && patient.Events.Count > 0 && patient.LastUserEventType > 0)
+                    {
+                        eventTypes.Add((from evt in db.EventTypes
+                                        where evt.EventTypeId != patient.LastUserEventType
+                                        && evt.IsRoutineAction == false
+                                        orderby evt.EventTypeId
+                                        select evt)
+                                            .FirstOrDefault());
+                    }
+                    else
+                    {
+                        var availableEventType = (from evt in db.EventTypes
+                                                  where evt.IsRoutineAction == false
+                                                  orderby evt.EventTypeId ascending
+                                                  select evt).FirstOrDefault();
+                        if (availableEventType != null)
+                            eventTypes.Add(availableEventType);
+                    }
                 }
-                else
+
+
+                if (eventTypes.Count > 0)
                 {
-                    var availableEventType = (from evt in db.EventTypes
-                                              where evt.IsRoutineAction == false
-                                              orderby evt.EventTypeId ascending
-                                              select evt).FirstOrDefault();
-                    if (availableEventType != null)
-                        eventTypes.Add(availableEventType);
+                    foreach (var evt in eventTypes.OrderBy(ev => ev.EventTypeId).ToList())
+                        eventsSelect.Add(new SelectListItem() { Text = evt.EventTypeName, Value = evt.EventTypeId.ToString() });
+
                 }
             }
-
-
-            if (eventTypes.Count > 0)
-            {
-                foreach (var evt in eventTypes.OrderBy(ev => ev.EventTypeId).ToList())
-                    eventsSelect.Add(new SelectListItem() { Text = evt.EventTypeName, Value = evt.EventTypeId.ToString() });
-
-            }
+            catch (Exception x) { }
 
             return eventsSelect;
         }

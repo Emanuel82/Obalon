@@ -11,10 +11,12 @@ namespace Obalon.Controllers
     public class HomeController : BaseController
     {
         private readonly IPatientService patientService;
+        private readonly ITicketValidator ticketValidator;
 
-        public HomeController(IPatientService pacientService)
+        public HomeController(ITicketValidator ticketValidator, IPatientService pacientService) : base(ticketValidator)
         {
             this.patientService = pacientService;
+            this.ticketValidator = ticketValidator;
         }
 
         public ActionResult Index()

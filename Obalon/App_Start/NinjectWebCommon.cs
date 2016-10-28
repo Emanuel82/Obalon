@@ -76,6 +76,7 @@ namespace Obalon.App_Start
             kernel.Bind<ObjectCache>().To<MemoryCache>().InSingletonScope().WithConstructorArgument("name", "DefaultCacheManager").WithConstructorArgument("config", ctx => new NameValueCollection());
             kernel.Bind<IPatientService>().To<PatientService>().InRequestScope();
             kernel.Bind<IEventService>().To<EventService>().InRequestScope();
+            kernel.Bind<ITicketValidator>().To<TicketValidator>().InRequestScope();
 
         }
     }

@@ -109,26 +109,30 @@ namespace Obalon
 
 
 
+    // Enable-Migrations -ContextTypeName Obalon.Models.ApplicationDbContext
+
     public class AuthRepository : IDisposable
     {
         private ApplicationDbContext _ctx;
 
-        private UserManager<IdentityUser> _userManager;
+        private UserManager<ApplicationUser> _userManager;
 
         public AuthRepository()
         {
             _ctx = new ApplicationDbContext();
-            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_ctx));
+            _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_ctx));
         }
 
-        public async Task<IdentityResult> RegisterUser(RegisterViewModel userModel)
+        public async Task<IdentityResult> RegisterUser(ApplicationUser userModel)
         {
-            IdentityUser user = new IdentityUser
-            {
-                UserName = userModel.Email
-            };
+            //IdentityUser user = new IdentityUser
+            //{
+            //    UserName = userModel.UserName
+            //};
+            IdentityUser user = userModel as ApplicationUser;
+            user.UserName = userModel.UserName;
 
-            var result = await _userManager.CreateAsync(user, userModel.Password);
+            var result = await _userManager.CreateAsync((ApplicationUser)user, userModel.Password);
 
             return result;
         }

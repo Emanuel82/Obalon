@@ -93,5 +93,37 @@ tr.selected {
 }
 
 span.glyphicon-plus-sign {
-        font-size: 1.2em;
-    }
+    font-size: 1.2em;
+}
+
+
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: -200px;
+    /*background-color: #F9C99E;*/
+    background-color: azure;
+    min-width: 600px;
+    z-index: 9999;
+    margin-bottom: 100px;
+    float: left;
+    width:150px;
+    padding:10px;
+}
+
+.dropbtn {
+    background-color: #F5AF70;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #F5AF70;
+}

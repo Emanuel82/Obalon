@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace Obalon.Controllers.Api
 {
+    [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
         private AuthRepository _repo = null;
@@ -26,7 +27,7 @@ namespace Obalon.Controllers.Api
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterViewModel userModel)
+        public async Task<IHttpActionResult> Register(ApplicationUser userModel)
         {
             if (!ModelState.IsValid)
             {

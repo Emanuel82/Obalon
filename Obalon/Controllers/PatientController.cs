@@ -9,18 +9,24 @@ using Obalon.Models;
 
 namespace Obalon.Controllers
 {
-    public class PatientController : Controller
+    public class PatientController : BaseController
     {
         private readonly IPatientService patientService;
+        private readonly ITicketValidator ticketValidator;
 
-        public PatientController(IPatientService pacientService)
+        public PatientController(ITicketValidator ticketValidator, IPatientService pacientService) : base(ticketValidator)
         {
             this.patientService = pacientService;
         }
 
         // GET: Patient
-        public ActionResult Index(int? id = null)
+        public ActionResult Index(int? id)
         {
+            if (!UserLoggedIn())
+            {
+                return Redirect("~/Home/Index");
+            }
+
             ResponseItemList<Patient> patients = null;
 
             if (!id.HasValue)
